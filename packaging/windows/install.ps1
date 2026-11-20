@@ -2,14 +2,12 @@
 #  - 이 폴더의 앱과 Node 런타임을 %LOCALAPPDATA%\Agentviewer 로 복사
 #  - 로그온할 때 백그라운드로 켜지는 작업 등록 ("Agentviewer")
 #  - 바탕화면·시작 메뉴에 "Agentviewer" 바로가기 (브라우저로 http://localhost:4747 열기)
-# 대시보드는 이 PC에서만 열려요 (다른 PC에 보여주려면 -Share).
+# 대시보드는 이 PC에서만 열려요.
 param(
   [string]$InstallDir = (Join-Path $env:LOCALAPPDATA 'Agentviewer'),
   [int]$Port = 4747,
   [int]$WindowMinutes = 480,
   [string]$TaskName = 'Agentviewer',
-  [switch]$Share,      # 사내망 공유 (관전 코드)
-  [switch]$Collab,     # -Share 와 함께: 공동작업자 코드도 (작업 지시·승인 가능, 믿을 수 있는 사람에게만)
   [switch]$NoTask,     # 로그온 자동 실행 등록 안 함
   [switch]$NoShortcut, # 바로가기 안 만듦
   [switch]$NoOpen      # 설치 후 브라우저 안 열기
@@ -42,13 +40,12 @@ New-Item -ItemType Directory -Force -Path (Join-Path $InstallDir 'logs') | Out-N
 Say "설치 위치: $InstallDir"
 
 # the launcher the logon task (and the shortcut) runs
-$shareArg = if ($Share -and $Collab) { "'--share', '--collab', " } elseif ($Share) { "'--share', " } else { '' }
 $start = @"
 # Agentviewer 시작 (설치 프로그램이 만든 파일). 포트 $Port 가 이미 쓰이고 있으면 아무것도 안 함.
 if (Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue) { exit 0 }
 `$dir = `$PSScriptRoot
 Start-Process -FilePath (Join-Path `$dir 'node\node.exe') ``
-  -ArgumentList '--no-deprecation', 'bin\agentviewer.js', $shareArg'--port', '$Port', '--window', '$WindowMinutes' ``
+  -ArgumentList '--no-deprecation', 'bin\agentviewer.js', '--port', '$Port', '--window', '$WindowMinutes' ``
   -WorkingDirectory (Join-Path `$dir 'app') ``
   -WindowStyle Hidden ``
   -RedirectStandardOutput (Join-Path `$dir 'logs\server.log') ``
@@ -56,7 +53,7 @@ Start-Process -FilePath (Join-Path `$dir 'node\node.exe') ``
 "@
 $startPath = Join-Path $InstallDir 'start.ps1'
 [IO.File]::WriteAllText($startPath, $start, (New-Object Text.UTF8Encoding $true))
-@{ port = $Port; taskName = $TaskName; share = [bool]$Share; startScript = $startPath } | ConvertTo-Json | Set-Content -Encoding ASCII (Join-Path $InstallDir 'install.json')
+@{ port = $Port; taskName = $TaskName; startScript = $startPath } | ConvertTo-Json | Set-Content -Encoding ASCII (Join-Path $InstallDir 'install.json')
 
 $psArgs = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$startPath`""
 if (-not $NoTask) {
@@ -89,7 +86,6 @@ if (Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyCon
   }
   if ($ok) { Say "실행 중: $url" } else { Say "시작하지 못했어요. 로그를 확인하세요: $(Join-Path $InstallDir 'logs\server-error.log')" }
 }
-if ($Share) { Say "사내망 공유 중: 접속 코드는 $(Join-Path $env:USERPROFILE '.agentviewer\access-codes.json')" }
 if (-not $NoOpen) { Start-Process $url }
 Write-Host ''
 Write-Host '설치 완료. 지우려면 Uninstall.cmd (또는 설치 폴더의 uninstall.ps1)' -ForegroundColor Green

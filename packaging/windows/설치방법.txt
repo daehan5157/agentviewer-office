@@ -16,14 +16,11 @@ Windows가 "PC 보호" 창을 띄우면 [추가 정보] > [실행]을 누르세�
   마지막 답변·터미널 화면 보기, 승인 버튼
   (작업 지시는 이 PC에서 연 대시보드에서만 됩니다)
 
-[다른 PC에도 보여주고 싶으면]
-압축 푼 폴더에서 PowerShell로:  powershell -ExecutionPolicy Bypass -File .\install.ps1 -Share
-(이미 설치돼 있어도 다시 실행하면 됩니다)
-접속 주소 http://<내 PC 이름>:4747 , 코드는 %USERPROFILE%\.agentviewer\access-codes.json
+대시보드는 이 PC에서만 열립니다. 다른 PC나 인터넷에는 열리지 않아요.
 
 [제거]
 Uninstall.cmd 를 더블클릭 (또는 %LOCALAPPDATA%\Agentviewer\uninstall.ps1).
-설정·접속 코드(%USERPROFILE%\.agentviewer)는 남습니다.
+꾸미기 설정(%USERPROFILE%\.agentviewer)은 남습니다.
 
 [문제가 생기면]
 로그: %LOCALAPPDATA%\Agentviewer\logs\server-error.log

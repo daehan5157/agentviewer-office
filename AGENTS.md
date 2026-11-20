@@ -40,5 +40,4 @@
 
 ## 하지 말 것
 
-- `~/.agentviewer`의 `access-codes.json`, `share-token`, `collab-token`, `*-link.txt`는 읽거나 바꾸거나 출력하지 마세요 (접속 비밀값).
-- 테마 작업 외의 파일은 건드리지 마세요.
+- `~/.agentviewer/themes/`의 새 테마 파일과 `look.json` 말고는 건드리지 마세요.

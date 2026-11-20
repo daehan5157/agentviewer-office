@@ -1,5 +1,5 @@
 # Agentviewer 제거: 자동 실행 작업, 바로가기, 설치 폴더를 지웁니다.
-# 설정·접속 코드(%USERPROFILE%\.agentviewer)는 남겨요 (-RemoveData 로 함께 삭제).
+# 꾸미기 설정(%USERPROFILE%\.agentviewer)은 남겨요 (-RemoveData 로 함께 삭제).
 param(
   # run from the installed folder: that folder; otherwise the default location
   [string]$InstallDir = $(if (Test-Path (Join-Path $PSScriptRoot 'install.json')) { $PSScriptRoot } else { Join-Path $env:LOCALAPPDATA 'Agentviewer' }),
@@ -39,6 +39,6 @@ if (Test-Path (Join-Path $InstallDir 'node\node.exe')) {
 }
 if ($RemoveData) {
   Remove-Item -Recurse -Force (Join-Path $env:USERPROFILE '.agentviewer') -ErrorAction SilentlyContinue
-  Write-Host '  설정·접속 코드 삭제'
+  Write-Host '  꾸미기 설정 삭제'
 }
 Write-Host '  제거 완료' -ForegroundColor Green

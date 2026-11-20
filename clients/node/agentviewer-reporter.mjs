@@ -14,12 +14,10 @@ const STATES = new Set(['thinking', 'typing', 'reading', 'running', 'web', 'mcp'
 let chain = Promise.resolve(); // keeps reports in order
 
 export class Reporter {
-  constructor(name, { client, channel, id, door = 'api', parent, url, token, ttlSeconds = 600, project } = {}) {
+  constructor(name, { client, channel, id, door = 'api', parent, url, ttlSeconds = 600, project } = {}) {
     this.server = (url || process.env.AGENTVIEWER_URL || 'http://127.0.0.1:4747').replace(/\/+$/, '');
     this.url = `${this.server}/api/report`;
-    token = token || process.env.AGENTVIEWER_TOKEN;
-    this.token = token;
-    this.headers = { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) };
+    this.headers = { 'content-type': 'application/json' };
     this.id = id || name;
     this.base = { id: this.id, name, client: client || name, channel: channel || client || name, door, ttl_seconds: ttlSeconds };
     if (parent) this.base.parent = parent;
@@ -67,7 +65,7 @@ export class Reporter {
 
   child(name, opts = {}) {
     const { client, channel, door } = this.base;
-    return new Reporter(name, { client, channel, door, url: this.server, token: this.token, id: `${this.id}-${name}`, ...opts, parent: this.id });
+    return new Reporter(name, { client, channel, door, url: this.server, id: `${this.id}-${name}`, ...opts, parent: this.id });
   }
 
   /** Leave the office (await on shutdown). */

@@ -74,7 +74,7 @@ node bin/agentviewer.js scan --json     # 원시 데이터
 
 - Orca가 실행 중이면 공식 CLI `orca worktree ps --json`으로 상태를 읽습니다. Orca가 꺼져 있을 때는 CLI를 부르지 않습니다.
 - 코디네이터가 띄운 **워커는 코디네이터 옆자리**에 앉습니다.
-- 오케스트레이터(👑)에게는 대시보드에서 **작업 지시**를 보내고, 터미널 화면을 보고, 화면에 뜬 **승인 선택지에 답할** 수 있습니다 (이 PC에서만, 또는 공동작업자 코드로).
+- 오케스트레이터(👑)에게는 대시보드에서 **작업 지시**를 보내고, 터미널 화면을 보고, 화면에 뜬 **승인 선택지에 답할** 수 있습니다.
 
 Orca CLI는 자동으로 찾습니다. 다른 위치라면 `--orca-bin <경로>`를 쓰거나 설정 파일에 `{ "orca": { "bin": "/경로/orca" } }`.
 
@@ -86,7 +86,7 @@ Orca CLI는 자동으로 찾습니다. 다른 위치라면 `--orca-bin <경로>`
 - **🤖 새 테마 만들어 달라기**: 주제(예: "우주정거장")를 적으면 이 PC에 설치된 Claude Code(`claude -p`)나 Codex(`codex exec`)를 **따로 한 번 실행**해서 테마를 그립니다. 지금 일하고 있는 에이전트에게는 끼어들지 않습니다. 이 일꾼은 도구(파일 쓰기·명령 실행)가 꺼진 채로 JSON만 답하고, Agentviewer가 검사해서 저장합니다.
 - **캐릭터 꾸미기**: 에이전트마다 머리·피부·옷 색과 소품(야구모자, 안전모, 수영모, 비니, 헤드폰, 안경)을 정합니다.
 
-설정은 그 PC의 `~/.agentviewer`에만 저장되고, **그 PC에서만** 바꿀 수 있습니다. 공유로 보는 사람은 바뀐 모습을 보기만 합니다.
+설정은 그 PC의 `~/.agentviewer`에만 저장됩니다.
 
 ### AI 에이전트가 JSON 파일로 테마 바꾸기
 
@@ -101,28 +101,6 @@ Orca CLI는 자동으로 찾습니다. 다른 위치라면 `--orca-bin <경로>`
 
 열려 있는 대시보드는 5초 안에 알아서 바뀝니다. 서버를 다시 켤 필요가 없습니다.
 테마 파일은 데이터일 뿐이라, 서버가 알 수 없는 키·잘못된 색·너무 큰 그림을 걸러 내고 화면은 색칠만 합니다.
-
-## 다른 PC에서 보기 (사내망 공유)
-
-```bash
-node bin/agentviewer.js --share            # 관전만 공유
-node bin/agentviewer.js --share --collab   # 관전 + 공동작업자(작업 지시·승인)
-```
-
-- 다른 PC나 휴대폰에서 `http://<이 PC 이름 또는 주소>:4747/` 로 들어오면 **접속 코드(6자리)** 를 묻습니다.
-  코드는 `~/.agentviewer/access-codes.json`에 있습니다. 볼 사람에게만 알려 주세요.
-  - **관전 코드**: 사무실을 보기만 합니다.
-  - **공동작업자 코드** (`--collab`일 때만): 오케스트레이터에게 작업을 보내고, 터미널 화면을 보고, 승인 선택지에 답할 수 있습니다. 내 PC의 에이전트를 움직일 수 있으니 **믿을 수 있는 사람에게만** 주세요.
-- 코드 대신 토큰 링크도 있습니다: `~/.agentviewer/share-link.txt`(관전), `collab-link.txt`(공동작업자).
-- 한 번 들어오면 HttpOnly 쿠키가 저장되고(30일), 주소창에 토큰이 남지 않습니다.
-- 코드·토큰을 바꾸려면 `~/.agentviewer`의 `access-codes.json`, `share-token`, `collab-token`을 지우고 다시 실행하세요.
-- Windows에서 다른 PC가 접속하지 못하면, 관리자 PowerShell에서 사내 서브넷만 방화벽을 엽니다.
-
-```powershell
-New-NetFirewallRule -DisplayName "Agentviewer-LAN" -Direction Inbound -Protocol TCP -LocalPort 4747 -Profile Domain,Private -RemoteAddress LocalSubnet -Action Allow
-```
-
-**인터넷에 포트를 직접 열지 마세요.** 회사 밖에서 보려면 Tailscale 같은 사설 VPN을 권합니다.
 
 ## 다른 경로 연결하기
 
@@ -161,7 +139,7 @@ curl -X POST http://127.0.0.1:4747/api/report \
 | `ttl_seconds` | 이 시간 동안 보고가 없으면 퇴근 (기본 600초) |
 | `finished` | `true`면 작업을 마치고 퇴장 |
 
-보고 API는 이 PC(localhost)에서만 토큰 없이 받습니다.
+보고 API는 이 PC(localhost)에서 오는 요청만 받습니다.
 
 ### 3. 보고 클라이언트 (Python · Node, 의존성 없음)
 
@@ -189,13 +167,9 @@ Node는 `clients/node/agentviewer-reporter.mjs`. Agentviewer가 꺼져 있어도
 
 ```text
 node bin/agentviewer.js [옵션]
-  --port <n>        포트 (기본 4747)
-  --host <addr>     바인드 주소 (기본 127.0.0.1, --share 면 0.0.0.0)
-  --token <t>       API·화면 접근 토큰 (환경변수 AGENTVIEWER_TOKEN)
+  --port <n>        포트 (기본 4747). 항상 이 PC(127.0.0.1)에서만 열립니다
   --config <file>   설정 파일 (기본 ~/.agentviewer/config.json)
   --window <분>     최근 몇 분 안에 활동한 세션을 보여줄지 (기본 60)
-  --share           사내망 공유 (접속 코드 + 토큰 링크)
-  --collab          --share 와 함께: 공동작업자 코드·링크도 만들기
   --demo            시뮬레이션 에이전트 추가
   --no-claude --no-codex --no-gemini --no-proc --no-orca   스캐너 개별 끄기
   --orca-bin <경로> Orca CLI 경로
@@ -204,15 +178,13 @@ node bin/agentviewer.js [옵션]
 
 ## 보안
 
-화면에는 **프롬프트 내용과 파일 경로가 그대로 보입니다.** 그래서 기본값은 가장 닫힌 쪽입니다.
+화면에는 **프롬프트 내용과 파일 경로가 그대로 보입니다.** 그래서 Agentviewer는 **설치한 PC 안에서만** 동작합니다.
 
-- 기본은 `127.0.0.1`에만 열리고, 이 PC의 페이지만 접근할 수 있습니다. 다른 사이트가 DNS 리바인딩으로 `localhost`를 읽으려 하면 거절합니다.
-- 에이전트를 움직이는 일(작업 지시, 승인 답하기, 꾸미기 변경, 테마 만들기)은 **이 PC에서 연 페이지**만 할 수 있습니다. 연결 주소·Host·Origin이 모두 이 PC여야 하고, 다른 사이트는 붙일 수 없는 전용 헤더가 필요합니다.
-- 공유(`--share`)는 관전만 엽니다. 공동작업자 권한은 `--collab`을 줄 때만 생깁니다.
-- 접속 코드 대입은 주소당 10분에 5번, 전체 합쳐 10분에 30번까지만 받습니다. 토큰은 144비트 난수이고 비교는 상수 시간으로 합니다.
-- 쿠키는 HttpOnly + SameSite=Strict. 모든 응답에 다른 사이트의 프레임 안에 들어가지 못하게 하는 헤더(클릭재킹 방지)와 nosniff, no-referrer를 붙입니다.
-- 공동작업자 작업 지시는 1분에 10번까지, 오케스트레이터에게만 갈 수 있고, 활동 로그에 누가 보냈는지 남습니다.
-- 접속 코드·토큰·링크는 모두 `~/.agentviewer`에만 있고, 저장소에는 들어 있지 않습니다.
+- 서버는 항상 `127.0.0.1`에만 열립니다. 다른 PC·휴대폰·인터넷에서 접속하는 기능은 없습니다.
+- 들어오는 요청도 연결 주소와 Host가 모두 이 PC여야 받습니다. 다른 사이트가 DNS 리바인딩으로 `localhost`를 읽으려 하면 거절합니다.
+- 에이전트를 움직이는 일(작업 지시, 승인 답하기, 꾸미기 변경, 테마 만들기)은 **이 PC에서 연 Agentviewer 페이지**만 할 수 있습니다. Origin도 이 PC여야 하고, 다른 사이트는 붙일 수 없는 전용 헤더가 필요합니다.
+- 모든 응답에 다른 사이트의 프레임 안에 들어가지 못하게 하는 헤더(클릭재킹 방지)와 nosniff, no-referrer를 붙입니다.
+- 세션 기록과 프로세스 목록은 읽기만 하고, 어디로도 보내지 않습니다. 새 테마를 그리는 일꾼(`claude`/`codex`)만 테마 주제와 형식 설명서를 해당 AI 서비스로 보냅니다.
 
 보안 문제를 발견하면 공개 이슈 대신 GitHub의 **Security › Report a vulnerability**로 비공개로 알려 주세요.
 
@@ -236,7 +208,6 @@ npm test
 bin/agentviewer.js        CLI (serve · scan · mcp · report)
 src/scanners/             claude · codex · gemini · processes · orca · demo 스캐너
 src/server.js             HTTP · SSE · 보고 API · 접근 제어
-src/share.js              --share 공유 (코드 · 토큰 · 링크)
 src/look.js               테마·캐릭터 꾸미기 (검사 · 저장)
 src/themeworker.js        새 테마를 그리는 일회용 에이전트
 src/mcp.js                stdio MCP 브리지

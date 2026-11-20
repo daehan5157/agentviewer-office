@@ -8,8 +8,6 @@ import { createScanners } from '../src/scanners/index.js';
 import { runMcpBridge } from '../src/mcp.js';
 import { loadConfig } from '../src/config.js';
 import { runScan } from '../src/scan-cli.js';
-import os from 'node:os';
-import { shareToken, writeShareLinks, writeCollabLinks, accessCodes, lanAddresses, firewallHint, LINK_FILE, TOKEN_FILE, COLLAB_TOKEN_FILE, COLLAB_LINK_FILE, CODES_FILE } from '../src/share.js';
 
 const HELP = `Agentviewer — 내 컴퓨터의 모든 AI 에이전트를 픽셀 오피스로 보여줍니다.
 
@@ -25,13 +23,7 @@ scan 옵션
   --json              전체 스냅샷을 JSON으로 출력
 
 serve 옵션
-  --port <n>          포트 (기본 4747)
-  --share             사내망 공유: 다른 PC·휴대폰 브라우저에서 접속 (토큰 링크 + 쿠키 인증)
-  --show-link         --share 때 토큰 포함 링크를 터미널에도 출력 (기본은 파일에만 저장)
-  --collab            --share 때 공동작업자 링크·코드도 만들기 (오케스트레이터에게 작업 지시·화면·승인까지
-                      할 수 있으니 믿을 수 있는 사람에게만). 기본은 꺼짐: 관전만 공유
-  --host <addr>       바인드 주소 (기본 127.0.0.1, --share 면 0.0.0.0)
-  --token <t>         API/화면 접근 토큰 (또는 AGENTVIEWER_TOKEN, --share 면 자동 생성)
+  --port <n>          포트 (기본 4747). 항상 이 PC(127.0.0.1)에서만 열립니다
   --config <file>     설정 파일 (기본 ~/.agentviewer/config.json)
   --demo              시뮬레이션 에이전트 추가
   --window <분>       최근 몇 분 내 활동한 세션을 표시할지 (기본 60)
@@ -68,10 +60,7 @@ function openBrowser(url) {
 
 async function serve(args) {
   const port = Number(args.port || process.env.PORT || 4747);
-  const share = !!args.share;
-  const host = args.host || (share ? '0.0.0.0' : '127.0.0.1');
-  let token = args.token || process.env.AGENTVIEWER_TOKEN || null;
-  if (share && !token) token = await shareToken();
+  const host = '127.0.0.1'; // this PC only: prompts and file paths are on screen
   const windowMs = Number(args.window || 60) * 60e3;
   const config = await loadConfig(args.config);
   const store = new Store({ removeMs: windowMs });
@@ -90,32 +79,13 @@ async function serve(args) {
   for (const s of scanners) s.start();
   setInterval(() => store.tick(), 1000);
 
-  // share mode: a second link for collaborators, who may also hand the orchestrator a task — only
-  // when asked for (--collab): it lets someone else steer an agent on this PC
-  const collabToken = share && control && args.collab === true ? await shareToken(COLLAB_TOKEN_FILE) : null;
-  const codes = share ? await accessCodes() : null;
   const look = new Look();
   const themeWorker = new ThemeWorker({ look, log: (m) => console.error(m) });
-  const server = createServer(store, { token, trustLoopback: share, control, collabToken, codes, look, themeWorker, log: (m) => console.error(m) });
+  const server = createServer(store, { control, look, themeWorker, log: (m) => console.error(m) });
   server.listen(port, host, async () => {
-    const local = `http://localhost:${port}/`;
-    const url = share || !token ? local : `${local}?t=${encodeURIComponent(token)}`;
-    console.log(`Agentviewer 실행 중 → ${share ? local : url}`);
-    if (share) {
-      const links = await writeShareLinks(port, token).catch(() => []);
-      const ips = lanAddresses();
-      console.log(`사내망 공유 중 · 다른 PC/휴대폰: ${ips.map((ip) => `http://${ip}:${port}/`).join(', ') || '(네트워크 주소 없음)'}`);
-      console.log(`  간단 접속: http://${os.hostname()}:${port}/ 에서 접속 코드 입력 (코드: ${CODES_FILE})`);
-      console.log(`  토큰 포함 접속 링크: ${LINK_FILE}  (토큰 파일: ${TOKEN_FILE})`);
-      if (collabToken) {
-        await writeCollabLinks(port, collabToken).catch(() => []);
-        console.log(`  공동작업자 링크 (보기 + 오케스트레이터 작업 지시·화면·승인): ${COLLAB_LINK_FILE}`);
-      }
-      if (args['show-link']) for (const l of links) console.log(`  ${l}`);
-      if (process.platform === 'win32') console.log(`  다른 PC에서 안 열리면 관리자 PowerShell에서 방화벽 규칙 추가:\n  ${firewallHint(port)}`);
-    }
+    const url = `http://localhost:${port}/`;
+    console.log(`Agentviewer 실행 중 → ${url}  (이 PC에서만 열림)`);
     console.log(`스캔: ${scanners.map((s) => s.constructor.name.replace('Scanner', '')).join(', ')}${config.loaded ? ` · 설정 ${config.path} (사용자 정의 ${config.processes.length}개)` : ''}`);
-    if (!share && host !== '127.0.0.1' && host !== 'localhost' && !token) console.warn('경고: 외부에 열려 있는데 토큰이 없습니다. 프롬프트 내용이 노출될 수 있어요 (--token 권장).');
     if (args.open) openBrowser(url);
   });
   server.on('error', (err) => {
@@ -133,7 +103,6 @@ async function serve(args) {
 
 async function report(args) {
   const url = args.url || process.env.AGENTVIEWER_URL || 'http://127.0.0.1:4747';
-  const token = args.token || process.env.AGENTVIEWER_TOKEN;
   const body = {
     id: args.id, name: args.name || process.env.USER || 'agent', state: args.state, task: args.task, detail: args.detail,
     client: args.client || 'CLI', channel: args.channel || 'CLI', parent: args.parent, tool: args.tool, mcp_server: args.mcp,
@@ -141,7 +110,7 @@ async function report(args) {
   };
   const r = await fetch(`${url}/api/report`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
   if (!r.ok) {
@@ -160,7 +129,7 @@ else if (cmd === 'scan' || cmd === 'doctor') runScan(args).catch((e) => {
   console.error(`스캔 실패: ${e.message}`);
   process.exit(1);
 });
-else if (cmd === 'mcp') runMcpBridge({ url: args.url || process.env.AGENTVIEWER_URL, token: args.token, name: args.name }).then(() => process.exit(0));
+else if (cmd === 'mcp') runMcpBridge({ url: args.url || process.env.AGENTVIEWER_URL, name: args.name }).then(() => process.exit(0));
 else if (cmd === 'report') report(args).catch((e) => {
   console.error(`보고 실패: ${e.message}`);
   process.exit(1);

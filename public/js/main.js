@@ -6,8 +6,7 @@ import { LookUI } from './lookui.js';
 
 const $ = (s) => document.querySelector(s);
 const params = new URLSearchParams(location.search);
-const token = params.get('t') || params.get('token');
-const q = token ? `?t=${encodeURIComponent(token)}` : '';
+const q = ''; // query suffix for API urls (none: this PC only)
 
 const world = new World($('#world'));
 const emptyEl = $('#empty'); // kept as a reference: it moves into the PiP window with the stage
@@ -18,14 +17,14 @@ let snap = null;
 const lookUI = new LookUI({ q, onLook: (l) => world.setLook(l), agents: () => snap?.agents || [] });
 $('#lookBtn').addEventListener('click', () => lookUI.open());
 
-// ---------- handing tasks to agents (this PC, or a collaborator link; plain share-link viewers just watch) ----------
+// ---------- handing tasks to the orchestrator (only from this PC) ----------
 let canSend = false;
-let role = { canScreen: false, collab: false };
-async function sendPrompt(agent, text, from = '') {
+let role = { canScreen: false };
+async function sendPrompt(agent, text) {
   const r = await fetch(`api/agents/${encodeURIComponent(agent.id)}/prompt${q}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-agentviewer-control': '1' },
-    body: JSON.stringify(from ? { text, from } : { text }),
+    body: JSON.stringify({ text }),
   });
   const j = await r.json().catch(() => ({}));
   return r.ok ? { ok: true, started: j.started } : { ok: false, error: j.error || `오류 ${r.status}` };
@@ -38,11 +37,11 @@ const control = {
     const j = await r.json().catch(() => ({}));
     return r.ok ? j : { ok: false, error: j.error || `오류 ${r.status}` };
   },
-  async key(agent, key, from = '') {
+  async key(agent, key) {
     const r = await fetch(agentUrl(agent, 'key'), {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-agentviewer-control': '1' },
-      body: JSON.stringify(from ? { key, from } : { key }),
+      body: JSON.stringify({ key }),
     });
     const j = await r.json().catch(() => ({}));
     return r.ok ? { ok: true } : { ok: false, error: j.error || `오류 ${r.status}` };
@@ -67,7 +66,7 @@ fetch(`api/control${q}`, { cache: 'no-store' })
   .then((r) => (r.ok ? r.json() : {}))
   .then((j) => {
     canSend = !!j.canSend;
-    role = { canScreen: !!j.canScreen, collab: j.role === 'collab' };
+    role = { canScreen: !!j.canScreen };
     composer.setRole(role);
     pipComposer?.setRole(role);
     updateComposers();
@@ -138,14 +137,6 @@ function connect() {
 }
 fetch(`api/state${q}`, { cache: 'no-store' })
   .then((r) => {
-    if (r.status === 401) {
-      const box = emptyEl;
-      box.hidden = false;
-      box.innerHTML = '<b>접속 토큰이 필요합니다</b><span>Agentviewer를 실행한 PC의 공유 링크(…/?t=…)로 접속하세요.<br>링크는 그 PC의 <code>~/.agentviewer/share-link.txt</code>에 있습니다.</span>';
-      $('#scanText').textContent = '인증 필요';
-      $('#scan').classList.add('stale');
-      return;
-    }
     connect();
   })
   .catch(() => connect());
@@ -248,8 +239,7 @@ world.onFocus = (id) => {
   updateComposers();
 };
 
-// Document PiP only exists on https:// or localhost. Opened by its LAN address (a share link), the
-// page falls back to a small ordinary window: clickable like the PiP, but not kept on top.
+// Document PiP (kept on top). Where the browser doesn't have it, a small ordinary window instead.
 async function openDocPip() {
   const docPip = 'documentPictureInPicture' in window;
   pipWin = docPip

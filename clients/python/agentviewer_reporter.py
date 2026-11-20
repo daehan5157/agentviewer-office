@@ -18,7 +18,7 @@ Agentviewer is not running they are silently dropped.
 
 States: thinking, typing, reading, running, web, mcp, delegating, planning,
 waiting, done, idle.  Server address: AGENTVIEWER_URL (default
-http://127.0.0.1:4747), token: AGENTVIEWER_TOKEN.
+http://127.0.0.1:4747).
 """
 
 import atexit
@@ -79,14 +79,10 @@ class _Sender:
 
 class Reporter:
     def __init__(self, name, *, client=None, channel=None, id=None, door="api",
-                 parent=None, url=None, token=None, ttl_seconds=600, project=None):
+                 parent=None, url=None, ttl_seconds=600, project=None):
         self.server = (url or os.environ.get("AGENTVIEWER_URL") or "http://127.0.0.1:4747").rstrip("/")
         self.url = self.server + "/api/report"
-        token = token or os.environ.get("AGENTVIEWER_TOKEN")
-        self.token = token
         self.headers = {"content-type": "application/json"}
-        if token:
-            self.headers["authorization"] = "Bearer " + token
         self.id = id or name
         self.base = {
             "id": self.id,
@@ -144,7 +140,6 @@ class Reporter:
         kw.setdefault("channel", self.base["channel"])
         kw.setdefault("door", self.base["door"])
         kw.setdefault("url", self.server)
-        kw.setdefault("token", self.token)
         return Reporter(name, parent=self.id, id=kw.pop("id", f"{self.id}-{name}"), **kw)
 
     def close(self, detail="종료"):

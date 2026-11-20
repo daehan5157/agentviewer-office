@@ -280,7 +280,6 @@ section h3 { font-size: 13px; margin: 14px 0 8px; color: var(--muted); text-tran
 .composer .c-choices button { height: auto; padding: 4px 10px; font-weight: 700; background: #5b3fd6; color: #fff; border-color: #ffd75e; }
 .composer .c-choices kbd { font: 11px ui-monospace, Consolas, monospace; background: rgba(0,0,0,0.3); border-radius: 4px; padding: 0 4px; margin-left: 4px; }
 .composer .c-toggle { height: 26px; padding: 0 10px; font-weight: 600; font-size: 12px; }
-.composer .c-from { width: 90px; height: 26px; padding: 0 8px; font-size: 12px; border-radius: 6px; border: 1px solid var(--line, #3a3f4b); background: transparent; color: inherit; }
 .composer .c-head .c-to { flex: 1; min-width: 0; }
 
 /* 🎨 꾸미기 */

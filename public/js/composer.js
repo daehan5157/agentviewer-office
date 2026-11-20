@@ -31,7 +31,7 @@ export class Composer {
         <div class="c-choices"></div>
         <pre class="c-screen"></pre>
       </div>
-      <div class="c-head"><span class="c-to"></span><input class="c-from" maxlength="20" placeholder="내 이름" hidden><button type="button" class="c-toggle">화면 보기</button></div>
+      <div class="c-head"><span class="c-to"></span><button type="button" class="c-toggle">화면 보기</button></div>
       <textarea rows="2" maxlength="4000" placeholder="업무를 지시하거나 질문에 답해 주세요 (Ctrl+Enter 보내기)"></textarea>
       <div class="c-foot"><span class="c-status" role="status"></span><button type="submit" class="c-send">보내기</button></div>`;
     const q = (s) => this.el.querySelector(s);
@@ -44,17 +44,7 @@ export class Composer {
     this.screenEl = q('.c-screen');
     this.choicesEl = q('.c-choices');
     this.toggle = q('.c-toggle');
-    this.fromEl = q('.c-from');
     this.canScreen = true;
-    this.collab = false;
-    try {
-      this.fromEl.value = this.win.localStorage.getItem('av-from') || '';
-    } catch {}
-    this.fromEl.addEventListener('change', () => {
-      try {
-        this.win.localStorage.setItem('av-from', this.fromEl.value.trim());
-      } catch {}
-    });
     this.el.addEventListener('submit', (e) => {
       e.preventDefault();
       this.submit();
@@ -73,14 +63,12 @@ export class Composer {
     });
   }
 
-  /** owner and collaborator (collab link): everything; the name field only for collaborators (shown in the log) */
-  setRole({ canScreen, collab }) {
+  /** at this PC: the orchestrator's screen and answers too */
+  setRole({ canScreen }) {
     this.canScreen = !!canScreen;
-    this.collab = !!collab;
     this.toggle.hidden = !this.canScreen;
-    this.fromEl.hidden = !this.collab;
     if (!this.canScreen) this.showScreen(false);
-    this.input.placeholder = this.collab ? '오케스트레이터에게 맡길 작업을 적어 주세요 (Ctrl+Enter 보내기)' : '업무를 지시하거나 질문에 답해 주세요 (Ctrl+Enter 보내기)';
+    this.input.placeholder = '업무를 지시하거나 질문에 답해 주세요 (Ctrl+Enter 보내기)';
   }
 
   /** Show the box for this agent (or hide it). Keeps the draft while the same agent stays selected. */
@@ -158,7 +146,7 @@ export class Composer {
     this.busy = true;
     this.setStatus(`보내는 중… ${label}`);
     try {
-      const r = await this.api.key(this.agent, key, this.collab ? this.fromEl.value.trim() : '');
+      const r = await this.api.key(this.agent, key);
       this.setStatus(r.ok ? `골랐어요 · ${label}` : r.error || '보내지 못했어요', r.ok ? 'ok' : 'err');
       this.choicesEl.innerHTML = '';
       this.win.clearTimeout(this.timer);
@@ -175,7 +163,7 @@ export class Composer {
     this.button.disabled = true;
     this.setStatus('보내는 중… (에이전트가 받을 때까지 최대 15초)');
     try {
-      const r = await this.api.send(this.agent, text, this.collab ? this.fromEl.value.trim() : '');
+      const r = await this.api.send(this.agent, text);
       if (r.ok) {
         this.input.value = '';
         this.setStatus(r.started === false ? '입력은 들어갔어요 · 아직 시작 확인 전' : '보냈어요 · 작업을 시작했어요', 'ok');

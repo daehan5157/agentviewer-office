@@ -35,10 +35,10 @@ const TOOLS = [
   },
 ];
 
-export async function runMcpBridge({ url = 'http://127.0.0.1:4747', token = process.env.AGENTVIEWER_TOKEN, name } = {}) {
+export async function runMcpBridge({ url = 'http://127.0.0.1:4747', name } = {}) {
   let client = { name: 'mcp-client', version: '' };
   const agentId = () => `mcp-${client.name}-${process.ppid}`;
-  const headers = { 'content-type': 'application/json', ...(token ? { authorization: `Bearer ${token}` } : {}) };
+  const headers = { 'content-type': 'application/json' };
 
   const post = async (body) => {
     const r = await fetch(`${url}/api/report`, { method: 'POST', headers, body: JSON.stringify(body) });
