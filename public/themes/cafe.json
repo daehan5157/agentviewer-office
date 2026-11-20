@@ -1,0 +1,152 @@
+{
+  "name": "카페",
+  "icon": "☕",
+  "description": "짙은 원목 바닥에 초록 벽, 화분이 놓인 카페",
+  "floor": {
+    "pattern": "planks",
+    "colors": [
+      "#7a4e2d",
+      "#6e4427",
+      "#845735",
+      "#694026"
+    ],
+    "line": "#53331d"
+  },
+  "wall": {
+    "top": "#2f4a3a",
+    "paper": "#4f7a5e",
+    "stripe": "#476f55",
+    "trim": "#2a1d14",
+    "panel": "#7a4e2d",
+    "panelLine": "#5c3a21",
+    "base": "#2a1d14"
+  },
+  "windows": {
+    "show": true,
+    "frame": "#2a1d14",
+    "sill": "#7a4e2d"
+  },
+  "lounge": [
+    "#b5452c",
+    "#c4553a",
+    "#8f3621"
+  ],
+  "props": [
+    {
+      "layer": "wall",
+      "x": 0.03,
+      "y": 0.2,
+      "scale": 1,
+      "repeat": 3,
+      "gap": 0.33,
+      "pixels": [
+        "kkkkkkkkkkkkkk",
+        "kSSSSSSSSSSSSk",
+        "kS.ww.ww..w.Sk",
+        "kS..........Sk",
+        "kS.www.ww.w.Sk",
+        "kS..........Sk",
+        "kSSSSSSSSSSSSk",
+        "kkkkkkkkkkkkkk"
+      ],
+      "colors": {
+        "k": "#2a1d14",
+        "S": "#3a3a3a",
+        "w": "#f2f2f2"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.01,
+      "y": 0.84,
+      "scale": 2,
+      "repeat": 6,
+      "gap": 0.18,
+      "pixels": [
+        ".g.g.g.",
+        "ggGgGgg",
+        ".gGgGg.",
+        "..ggg..",
+        ".ppppp.",
+        ".ppppp.",
+        "..ppp.."
+      ],
+      "colors": {
+        "g": "#4caf50",
+        "G": "#357a38",
+        "p": "#b5651d"
+      }
+    }
+  ],
+  "workstation": {
+    "desk": {
+      "pixels": [
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "...........KKKKKKKKKKKKKKKKKK...........",
+        "....gg.....KKKKKKKKKKKKKKKKKK...........",
+        "....gg...SSSSSSSSSSSSSSSSSSSSSS.ckkc....",
+        "...PPPP..swwwwwwwwwwwwwwwwwwwws.ccccc...",
+        "...PPPPWWWWWWWWWWWWWWWWWWWWWWWWWcccc....",
+        "..wWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw..",
+        "..wwwWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWwww..",
+        "....wwwwwwwwwwwWWWWWWWWWWwwwwwwwwwww....",
+        "..........wwwwwwwwwdddwwwwwwww..........",
+        "...................ddd..................",
+        "...................ddd..................",
+        "...................ddd..................",
+        "...................ddd..................",
+        "...................ddd..................",
+        "...................ddd..................",
+        "..............ddddddddddddd.............",
+        "..............ddddddddddddd............."
+      ],
+      "colors": {
+        "K": "#2a2a33",
+        "s": "#b8bcc8",
+        "S": "#d7dbe6",
+        "w": "#7a4e2d",
+        "W": "#94633c",
+        "d": "#4a2f1b",
+        "c": "#f2f2f2",
+        "k": "#5a3a22",
+        "P": "#b5651d",
+        "g": "#4caf50"
+      },
+      "screen": {
+        "x": 12,
+        "y": 1,
+        "w": 16,
+        "h": 9
+      }
+    },
+    "chair": {
+      "pixels": [
+        ".WWWWWWWWWW.",
+        ".wwwwwwwwww.",
+        ".wwwwwwwwww.",
+        "..dd....dd..",
+        "..dd....dd..",
+        "..dd....dd..",
+        "..dd....dd..",
+        "..dd....dd..",
+        "..dddddddd..",
+        "..dd....dd..",
+        "..dd....dd..",
+        "..dd....dd.."
+      ],
+      "colors": {
+        "w": "#94633c",
+        "W": "#b07a4c",
+        "d": "#4a2f1b"
+      }
+    }
+  }
+}

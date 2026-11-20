@@ -1,0 +1,25 @@
+{
+  "name": "agentviewer",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "repository": "github:daehan5157/agentviewer-office",
+  "description": "Pixel-art office that continuously scans every AI agent on your machine (Claude Code, Codex, Gemini CLI, MCP clients, custom agents) and shows how each one came in and what it is doing right now.",
+  "type": "module",
+  "bin": {
+    "agentviewer": "bin/agentviewer.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "public"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "start": "node bin/agentviewer.js",
+    "demo": "node bin/agentviewer.js --demo",
+    "test": "node --test test/*.test.js"
+  }
+}

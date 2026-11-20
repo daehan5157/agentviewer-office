@@ -1,0 +1,237 @@
+{
+  "name": "수영장",
+  "icon": "🏊",
+  "description": "물 위에 책상을 띄운 실내 수영장",
+  "floor": {
+    "pattern": "water",
+    "colors": [
+      "#3fa9e0",
+      "#8fd6f7",
+      "#bfeaff"
+    ],
+    "line": "#2b8cc4"
+  },
+  "wall": {
+    "top": "#ffffff",
+    "paper": "#e8f4fb",
+    "stripe": "#d3e9f5",
+    "trim": "#2b8cc4",
+    "panel": "#5aa9e6",
+    "panelLine": "#3b8fd0",
+    "base": "#2b6db0"
+  },
+  "windows": {
+    "show": true,
+    "frame": "#ffffff",
+    "sill": "#d3e9f5"
+  },
+  "lounge": [
+    "#f2e3c2",
+    "#ead6ad",
+    "#d9c294"
+  ],
+  "sideWall": [
+    "#bfe0f2",
+    "#e8f4fb",
+    "#9fcde6"
+  ],
+  "bottomWall": [
+    "#5aa9e6",
+    "#3b8fd0",
+    "#ffffff"
+  ],
+  "outside": {
+    "sidewalk": "#f2e3c2",
+    "grass": "#e8d3a4",
+    "grass2": "#f2c14e"
+  },
+  "props": [
+    {
+      "layer": "wall",
+      "x": 0.06,
+      "y": 0.15,
+      "scale": 1,
+      "repeat": 4,
+      "gap": 0.25,
+      "pixels": [
+        "...RRRR...",
+        ".RRWWWWRR.",
+        ".RW....WR.",
+        "RW......WR",
+        "RW......WR",
+        ".RW....WR.",
+        ".RRWWWWRR.",
+        "...RRRR..."
+      ],
+      "colors": {
+        "R": "#e5484d",
+        "W": "#ffffff"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0,
+      "y": 0.3,
+      "scale": 1,
+      "repeat": 1,
+      "pixels": [
+        "RRWWRRWWRRWWRRWWRRWWRRWWRRWWRRWWRRWWRRWWRRWWRRWW"
+      ],
+      "colors": {
+        "R": "#e5484d",
+        "W": "#ffffff"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0,
+      "y": 0.66,
+      "scale": 1,
+      "repeat": 1,
+      "pixels": [
+        "YYBBYYBBYYBBYYBBYYBBYYBBYYBBYYBBYYBBYYBBYYBBYYBB"
+      ],
+      "colors": {
+        "Y": "#f2c14e",
+        "B": "#2b6db0"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.02,
+      "y": 0.02,
+      "scale": 2,
+      "pixels": [
+        "g....g",
+        "gggggg",
+        "g....g",
+        "gggggg",
+        "g....g",
+        "gggggg",
+        "g....g"
+      ],
+      "colors": {
+        "g": "#c4ccd8"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.35,
+      "y": 0.8,
+      "scale": 2,
+      "repeat": 3,
+      "gap": 0.22,
+      "pixels": [
+        "..yy..",
+        ".yyyy.",
+        "yyKyyy",
+        ".yyyyy",
+        "..yyy."
+      ],
+      "colors": {
+        "y": "#ffd75e",
+        "K": "#2b2b2b"
+      }
+    },
+    {
+      "layer": "outside",
+      "x": 0.05,
+      "y": 0,
+      "scale": 1,
+      "repeat": 6,
+      "gap": 0.17,
+      "pixels": [
+        "..RRWWRR..",
+        ".RRWWRRWW.",
+        "RRWWRRWWRR",
+        "....bb....",
+        "....bb....",
+        "....bb...."
+      ],
+      "colors": {
+        "R": "#e5484d",
+        "W": "#ffffff",
+        "b": "#8a5a1c"
+      }
+    }
+  ],
+  "outfit": {
+    "accessory": "swimcap"
+  },
+  "workstation": {
+    "desk": {
+      "pixels": [
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        "...............BBBBBBBBBBBBBBBBBBBB...............",
+        ".......gg......wwwwwyyyyBBwwwwyyyyy...............",
+        "......ccccyyyyywwwYYYYYYBBYYYYYYyyywwwwwyy........",
+        ".....wcccccYYYYYYYYYYYYYBBYYYYYYYYYYYYYpppppp.....",
+        "..yyywccccYYYYYYYYYYYYYYBBYYYYYYYYYYYYYppppppwww..",
+        ".yyyYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYwww.",
+        "yyyyYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYwwww",
+        "yyyyyYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYwwwww",
+        ".yyyywwYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYyywwww.",
+        "..yyywwwwwyyYYYYYYYYYYYYYYYYYYYYYYYYYYwwyyyyywww..",
+        ".....wwwwwyyyyywwwwwyyyyywwwwwyyyyywwwwwyyyyy.....",
+        "....SSSSSSSyyyywwwwwyyyyywwwwwyyyyywwwwSSSSSSS....",
+        "............SSSSSSSSSSSSSSSSSSSSSSSSSS............"
+      ],
+      "colors": {
+        "y": "#ffd75e",
+        "w": "#ffffff",
+        "Y": "#ffe9a0",
+        "S": "#c99a1c",
+        "B": "#2b6db0",
+        "c": "#f2f2f2",
+        "g": "#4caf50",
+        "p": "#ff7ad9"
+      },
+      "screen": {
+        "x": 16,
+        "y": 1,
+        "w": 18,
+        "h": 10
+      }
+    },
+    "chair": {
+      "pixels": [
+        ".....wrrrwwwr.....",
+        "...wwwrrrwwwrrr...",
+        ".rrwwwrrrwwwrrrww.",
+        "rrrww........rrwww",
+        "rrrw..........rwww",
+        "rrrw..........rwww",
+        "rrrww........rrwww",
+        ".rrwwwrrrwwwrrrww.",
+        "...wwwrrrwwwrrr...",
+        ".....wrrrwwwr....."
+      ],
+      "front": [
+        "..................",
+        "..................",
+        "..................",
+        "..................",
+        "..................",
+        "rrrw..........rwww",
+        "rrrww........rrwww",
+        ".rrwwwrrrwwwrrrww.",
+        "...wwwrrrwwwrrr...",
+        ".....wrrrwwwr....."
+      ],
+      "colors": {
+        "r": "#e5484d",
+        "w": "#ffffff"
+      }
+    }
+  }
+}

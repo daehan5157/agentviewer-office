@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentviewer</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%231b1726'/%3E%3Crect x='4' y='2' width='8' height='5' fill='%23e8c46a'/%3E%3Crect x='5' y='4' width='6' height='3' fill='%23f6d3b3'/%3E%3Crect x='4' y='8' width='8' height='5' fill='%23d97757'/%3E%3Crect x='5' y='13' width='2' height='2' fill='%232f3e5c'/%3E%3Crect x='9' y='13' width='2' height='2' fill='%232f3e5c'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo" aria-hidden="true"></span>Agentviewer</div>
+    <div class="scan" id="scan" title="Claude Code · Codex · Gemini CLI 기록과 실행 중인 프로세스, MCP 서버를 계속 스캔합니다"><span class="pulse"></span><span id="scanText">연결 중…</span></div>
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <label class="toggle"><input type="checkbox" id="showBubbles" checked> 말풍선</label>
+      <button id="zoomOut" title="축소">−</button><button id="zoomFit" title="화면 맞춤">⤢</button><button id="zoomIn" title="확대">+</button>
+      <button id="lookBtn" title="배경 테마 · 캐릭터 꾸미기">🎨 꾸미기</button>
+      <button id="pip" class="pip-btn" title="작은 창으로 띄우기 (항상 위)" hidden>⧉ PiP</button>
+    </div>
+  </header>
+  <main>
+    <section class="stage" id="stage">
+      <canvas id="world" aria-label="에이전트 픽셀 오피스"></canvas>
+      <div class="empty" id="empty" hidden>
+        <b>아직 감지된 에이전트가 없어요</b>
+        <span>Claude Code · Codex · Gemini CLI를 실행하면 해당 출입문으로 들어옵니다.<br>미리 보려면 <code>agentviewer --demo</code></span>
+      </div>
+    </section>
+    <aside class="panel" id="panel">
+      <nav class="tabs">
+        <button data-tab="agents" class="on">에이전트</button>
+        <button data-tab="feed">활동 로그</button>
+        <button data-tab="paths">경로 · MCP</button>
+      </nav>
+      <div class="search"><input id="filter" type="search" placeholder="이름, 작업, 경로로 검색"></div>
+      <div id="tab-agents" class="tab on"><div class="list"></div></div>
+      <div id="tab-feed" class="tab"></div>
+      <div id="tab-paths" class="tab"></div>
+    </aside>
+  </main>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

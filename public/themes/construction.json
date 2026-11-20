@@ -1,0 +1,219 @@
+{
+  "name": "공사장",
+  "icon": "🚧",
+  "description": "흙바닥 현장에서 안전모 쓰고 일하는 팀",
+  "floor": {
+    "pattern": "dirt",
+    "colors": [
+      "#a07a52",
+      "#8f6b45",
+      "#b48b5f",
+      "#7d5c3a"
+    ],
+    "line": "#6e6a63"
+  },
+  "wall": {
+    "top": "#3a3a3a",
+    "paper": "#d9b779",
+    "stripe": "#cfa964",
+    "trim": "#2b2b2b",
+    "panel": "#f2c230",
+    "panelLine": "#2b2b2b",
+    "base": "#2b2b2b"
+  },
+  "windows": {
+    "show": false
+  },
+  "lounge": [
+    "#8d8a84",
+    "#9a978f",
+    "#6e6a63"
+  ],
+  "sideWall": [
+    "#6e6a63",
+    "#8d8a84",
+    "#5c5852"
+  ],
+  "bottomWall": [
+    "#6e6a63",
+    "#5c5852",
+    "#f2c230"
+  ],
+  "outside": {
+    "sidewalk": "#8d8a84",
+    "grass": "#7d5c3a",
+    "grass2": "#8f6b45"
+  },
+  "props": [
+    {
+      "layer": "wall",
+      "x": 0.04,
+      "y": 0.18,
+      "scale": 1,
+      "repeat": 6,
+      "gap": 0.16,
+      "pixels": [
+        "....Y....",
+        "...YYY...",
+        "..YYKYY..",
+        ".YYYKYYY.",
+        "YYYYKYYYY",
+        ".YYYYYYY.",
+        "..YYKYY..",
+        "...YYY...",
+        "....Y...."
+      ],
+      "colors": {
+        "Y": "#f2c230",
+        "K": "#2b2b2b"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.03,
+      "y": 0.86,
+      "scale": 2,
+      "repeat": 8,
+      "gap": 0.12,
+      "pixels": [
+        "...o...",
+        "..oWo..",
+        "..ooo..",
+        ".oWWWo.",
+        ".ooooo.",
+        "ooooooo"
+      ],
+      "colors": {
+        "o": "#f07a1a",
+        "W": "#ffffff"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.62,
+      "y": 0.04,
+      "scale": 2,
+      "pixels": [
+        "YKYKYKYKYKYKYKYK",
+        "YKYKYKYKYKYKYKYK",
+        "g..............g",
+        "g..............g"
+      ],
+      "colors": {
+        "Y": "#f2c230",
+        "K": "#2b2b2b",
+        "g": "#6e6a63"
+      }
+    },
+    {
+      "layer": "floor",
+      "x": 0.44,
+      "y": 0.9,
+      "scale": 2,
+      "pixels": [
+        "....ss....",
+        "..ssssss..",
+        ".ssSsssss.",
+        "ssssssSsss"
+      ],
+      "colors": {
+        "s": "#d9b779",
+        "S": "#c49a52"
+      }
+    },
+    {
+      "layer": "outside",
+      "x": 0.02,
+      "y": 0.1,
+      "scale": 1,
+      "repeat": 12,
+      "gap": 0.085,
+      "pixels": [
+        "rrrrrrrrrr",
+        "rRrRrRrRrR",
+        "rrrrrrrrrr"
+      ],
+      "colors": {
+        "r": "#b3542e",
+        "R": "#8f3f22"
+      }
+    }
+  ],
+  "outfit": {
+    "accessory": "hardhat",
+    "shirt": "#f07a1a"
+  },
+  "workstation": {
+    "desk": {
+      "pixels": [
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK................",
+        "................KKKKKKKKKKKKKKKKKKKK.......KKKK.....",
+        "................KKKKKKKKKKKKKKKKKKKK.......K..K.....",
+        "................KKKKKKKKKKKKKKKKKKKK....RRRRRRRRRR..",
+        "................KKKKKKKKKKKKKKKKKKKK....rrrrrrrrrr..",
+        "..BBBBBBBBBBB............kk.......ccc...rrrrrrrrrr..",
+        "..bbbbbbbbbbB............kk.......cccc..rrrrrrrrrr..",
+        "..bbbbbbbbbbb.........kkkkkkkk....ccc...rrrrrrrrrr..",
+        "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",
+        "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+        "dddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "....yyyyyyyyyy........................yyyyyyyyyy....",
+        ".....y......y..........................y......y.....",
+        ".....k......k..........................k......k.....",
+        ".....y......y..........................y......y.....",
+        "....k........k........................k........k....",
+        "....y........y........................y........y....",
+        "....k........k........................k........k....",
+        "...y..........y......................y..........y...",
+        "...k..........k......................k..........k...",
+        "...y..........y......................y..........y..."
+      ],
+      "colors": {
+        "K": "#2b2b2b",
+        "k": "#4a4a4a",
+        "w": "#c9a26a",
+        "W": "#e0bd86",
+        "d": "#8f6b45",
+        "y": "#f2c230",
+        "b": "#5aa9e6",
+        "B": "#2b6db0",
+        "r": "#d65151",
+        "R": "#f07a7a",
+        "c": "#f2f2f2"
+      },
+      "screen": {
+        "x": 17,
+        "y": 1,
+        "w": 18,
+        "h": 10
+      }
+    },
+    "chair": {
+      "pixels": [
+        ".OOOOOOOOOOOO.",
+        ".OOOOOOOOOOOO.",
+        "..oooooooooo..",
+        "..oooooooooo..",
+        "..oooooooooo..",
+        "..OOOOOOOOOO..",
+        "..oooooooooo..",
+        "..oooooooooo..",
+        "..oooooooooo..",
+        "..oOOOOOOOOo..",
+        "..oooooooooo..",
+        "..oooooooooo.."
+      ],
+      "colors": {
+        "o": "#f07a1a",
+        "O": "#c45c0c"
+      }
+    }
+  }
+}
